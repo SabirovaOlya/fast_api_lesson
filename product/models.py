@@ -19,6 +19,7 @@ class Product(TimeModel):
     name: Mapped[str] = mapped_column(String, nullable=False)
     price: Mapped[float] = mapped_column(Float, nullable=False)
     description: Mapped[str | None] = mapped_column(String, nullable=True)
+    # slug: Mapped[str] = mapped_column(String, nullable=False, unique=True)
     count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     category_id: Mapped[UUID] = mapped_column(UUID, ForeignKey("categories.id"))
 

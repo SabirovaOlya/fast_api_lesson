@@ -17,14 +17,14 @@ class CreateUser(BaseModel):
     birthday: date
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class UserBaseModel(BaseModel):
     id: UUID
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class ReadUser(UserBaseModel):
@@ -35,7 +35,7 @@ class ReadUser(UserBaseModel):
     birthday: date
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class UserLoginSchema(BaseModel):

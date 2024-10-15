@@ -1,3 +1,5 @@
+from slugify import slugify
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from product.models import Category, Product
 from product.schemas import CreateCategory, CreateProduct
@@ -16,16 +18,33 @@ def get_category(db: Session, category_id: str):
 
 
 def get_categories(db: Session):
-    return db.query(Category).all()
+    categories_with_count = db.query(
+        Category,
+        func.count(Product.id).label('product_count')
+    ).outerjoin(Product).group_by(Category.id).all()
+
+    categories = []
+    for category, product_count in categories_with_count:
+        category.product_count = product_count
+        categories.append(category)
+
+    return categories
 
 
 def create_product(db: Session, product: CreateProduct):
+    # product_slug = slugify(product.name)
+    # counter = 1
+    # while db.query(Product).filter(Product.slug == product_slug).first() is not None:
+    #     product_slug = slugify(f"{product.name}-{counter}")
+    #     counter += 1
+
     db_product = Product(
         name=product.name,
         price=product.price,
         description=product.description,
         count=product.count,
-        category_id=product.category_id
+        category_id=product.category_id,
+        # slug=product_slug
     )
     db.add(db_product)
     db.commit()
