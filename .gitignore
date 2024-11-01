@@ -3,7 +3,6 @@
 .mypy_cache
 .vscode
 .env
-templates/
 __pycache__
 .pytest_cache
 htmlcov
